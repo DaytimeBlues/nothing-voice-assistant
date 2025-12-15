@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<voice-interaction-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:sessionService="com.nothing.voiceassistant.NothingAssistantSessionService"
+    android:recognitionService="com.nothing.voiceassistant.NothingRecognitionService"
+    android:settingsActivity="com.nothing.voiceassistant.ui.SettingsActivity"
+    android:supportsAssist="true"
+    android:supportsLaunchVoiceAssistFromKeyguard="true"
+    android:supportsLocalInteraction="true" />
+
+
+
+

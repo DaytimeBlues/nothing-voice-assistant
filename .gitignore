@@ -1,0 +1,9 @@
+.gradle/
+build/
+*.iml
+*.log
+local.properties
+secrets.properties
+.idea/
+*.keystore
+app/src/main/res/raw/speech_credentials.json

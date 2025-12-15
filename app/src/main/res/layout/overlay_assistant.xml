@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Assistant overlay that appears when long-pressing power button -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#CC000000">
+
+    <!-- Center content -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="32dp">
+
+        <!-- Recording indicator circle -->
+        <FrameLayout
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_gravity="center">
+
+            <!-- Outer pulsing ring (animated in code) -->
+            <View
+                android:id="@+id/pulseRing"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:layout_gravity="center"
+                android:background="@drawable/pulse_ring" />
+
+            <!-- Inner recording dot -->
+            <View
+                android:id="@+id/recordingDot"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:background="@drawable/recording_dot" />
+
+        </FrameLayout>
+
+        <!-- Recording status text -->
+        <TextView
+            android:id="@+id/statusText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/recording"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-medium" />
+
+        <!-- Timer display -->
+        <TextView
+            android:id="@+id/timerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="00:00"
+            android:textColor="#FF5555"
+            android:textSize="48sp"
+            android:fontFamily="sans-serif-light" />
+
+        <!-- Stop button -->
+        <ImageButton
+            android:id="@+id/stopButton"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/stop_button_bg"
+            android:src="@drawable/ic_stop"
+            android:contentDescription="@string/stop_recording"
+            android:scaleType="centerInside"
+            android:padding="16dp" />
+
+        <!-- Hint text -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/tap_to_stop"
+            android:textColor="#AAAAAA"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</FrameLayout>

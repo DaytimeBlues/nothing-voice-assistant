@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Core Permissions -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    
+    <!-- For viewing recordings on external storage -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" 
+        android:maxSdkVersion="32" />
+    
+    <!-- Required for VoiceInteractionService to query app context -->
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+    
+    <!-- Nothing Glyph SDK (placeholder - uncomment when you have API key) -->
+    <!-- <uses-permission android:name="com.nothing.ketchum.permission.ENABLE" /> -->
+
+     <application
+        android:name=".VoiceAssistantApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.NothingVoiceAssistant"
+        android:networkSecurityConfig="@xml/network_security_config"
+        tools:targetApi="36">
+
+        <!-- Nothing Glyph API Key (placeholder - add your key when available) -->
+        <!-- <meta-data android:name="NothingKey" android:value="YOUR_API_KEY_HERE" /> -->
+
+        <!-- ============================================ -->
+        <!-- VOICE INTERACTION SERVICE (Power Button) -->
+        <!-- ============================================ -->
+        
+        <!-- Main VoiceInteractionService - receives long-press power events -->
+        <service
+            android:name=".NothingAssistantService"
+            android:label="@string/assistant_name"
+            android:permission="android.permission.BIND_VOICE_INTERACTION"
+            android:foregroundServiceType="microphone"
+            android:exported="true">
+            
+            <intent-filter>
+                <action android:name="android.service.voice.VoiceInteractionService" />
+            </intent-filter>
+            
+            <meta-data
+                android:name="android.voice_interaction"
+                android:resource="@xml/voice_interaction_service" />
+        </service>
+
+        <!-- Session factory service -->
+        <service
+            android:name=".NothingAssistantSessionService"
+            android:label="@string/assistant_name"
+            android:permission="android.permission.BIND_VOICE_INTERACTION"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.voice.VoiceInteractionSessionService" />
+            </intent-filter>
+        </service>
+
+        <!-- Recognition service (required for VIS to be "qualified") -->
+        <service
+            android:name=".NothingRecognitionService"
+            android:label="@string/assistant_name"
+            android:permission="android.permission.BIND_RECOGNITION_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.speech.RecognitionService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.speech"
+                android:resource="@xml/recognition_service" />
+        </service>
+
+        <!-- ============================================ -->
+        <!-- BACKGROUND WORKERS -->
+        <!-- ============================================ -->
+        
+        <!-- WorkManager initializer -->
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup" />
+        </provider>
+
+        <!-- ============================================ -->
+        <!-- UI ACTIVITIES -->
+        <!-- ============================================ -->
+        
+        <!-- Main Settings/Setup Activity -->
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:exported="true"
+            android:theme="@style/Theme.NothingVoiceAssistant">
+            
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            
+            <!-- Allow this activity to be launched as assistant settings -->
+            <intent-filter>
+                <action android:name="android.intent.action.ASSIST" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- Recordings List Activity -->
+        <activity
+            android:name=".ui.RecordingsActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.SettingsActivity"
+            android:theme="@style/Theme.NothingVoiceAssistant" />
+
+    </application>
+
+</manifest>
